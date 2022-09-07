@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4fb26bd9-2053-40f2-9901-35ad16a313c3" >
+		<http:listener-connection host="localhost" port="8121" />
+	</http:listener-config>
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="fac9c549-3b2f-4c49-a8ed-a7932d910e07" >
+		<email:smtp-connection host="smtp.gmail.com" port="587" user="sheikn1993@gmail.com" password="Naseer@123" >
+			<email:properties >
+				<email:property key="mail.smtp.starttls.enable" value="true" />
+			</email:properties>
+		</email:smtp-connection>
+	</email:smtp-config>
+	<flow name="smtpmFlow" doc:id="8c3df391-8cc6-4021-af82-c926031e2cfe" >
+		<http:listener doc:name="Listener" doc:id="0e18000b-99ba-4b1d-a2c0-62799b495cb1" config-ref="HTTP_Listener_config" path="smtpm"/>
+		<email:send doc:id="c3a8877b-3dfe-4e5d-8223-a4dbddba1793" config-ref="Email_SMTP" fromAddress="sheikn1993@gmail.com" subject="WITH SMTP MAIL">
+			<email:to-addresses >
+				<email:to-address value="S.NASEER.321@GMAIL.COM" />
+			</email:to-addresses>
+		</email:send>
+		<logger level="INFO" doc:name="Logger" doc:id="ee18fc0b-cc9c-4315-8353-f771c5133062" message="#[payload]"/>
+	</flow>
+</mule>
